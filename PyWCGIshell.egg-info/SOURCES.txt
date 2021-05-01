@@ -1,0 +1,9 @@
+LICENSE.txt
+MANIFEST.in
+PyWCGIshell.py
+README.md
+setup.py
+PyWCGIshell.egg-info/PKG-INFO
+PyWCGIshell.egg-info/SOURCES.txt
+PyWCGIshell.egg-info/dependency_links.txt
+PyWCGIshell.egg-info/top_level.txt
