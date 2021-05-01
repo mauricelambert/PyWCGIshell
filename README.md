@@ -32,6 +32,7 @@ python3 -m PyWCGIshell wsgi # Try it in wsgi mode
 from PyWCGIshell import WebShell
 
 def my_default_cgi_page():
+	print("Content-type:text/plain")
 	print("")
 	print("Hello World !")
 
