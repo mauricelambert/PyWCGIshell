@@ -21,18 +21,6 @@
 
 """This package implement a WebShell for CGI and WSGI server."""
 
-print(
-    """
-PyWCGIshell  Copyright (C) 2021  Maurice Lambert
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it
-under certain conditions.
-"""
-)
-
-__version__ = "0.0.1"
-__all__ = ["WebShell"]
-
 from os import getcwd, environ, path, scandir, _Environ
 from sys import getdefaultencoding
 from subprocess import Popen, PIPE, TimeoutExpired
@@ -49,6 +37,16 @@ import json
 import html
 import sys
 import re
+
+__version__ = "0.0.2"
+__copyright__ = """
+PyWCGIshell  Copyright (C) 2021  Maurice Lambert
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions.
+"""
+copyright = __copyright__
+__all__ = ["WebShell"]
 
 BinaryListOrNone = TypeVar("BinaryListOrNone", List[bytes], None)
 
@@ -554,16 +552,22 @@ def launch_wsgi():
     httpd.serve_forever()
 
 
+def print_copyright():
+    print(copyright)
+
+
 if __name__ == "__main__":
     webshell = WebShell()
 
     if "wsgi" in sys.argv:
+        print_copyright()
         from webbrowser import open as webopen
 
         webshell.type = "wsgi"
         webopen("http://127.0.0.1:8000/")
         launch_wsgi()
     elif webshell.type == "wsgi":
+        print_copyright()
         launch_wsgi()
     elif webshell.type == "cgi":
         try:
@@ -571,3 +575,7 @@ if __name__ == "__main__":
         except KeyError:
             print('ERROR: To try this WebShell in WSGI mode add "wsgi" as argument.')
             print('Use: "python3 -m PyWCGIshell wsgi" to try this WebShell')
+        finally:
+            print("<!--")
+            print_copyright()
+            print("-->")
