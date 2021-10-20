@@ -1,36 +1,28 @@
-from setuptools import setup, find_packages
-import PyWCGIshell
-
-name = "Maurice Lambert"
-email = "mauricelambert434@gmail.com"
+import PyWCGIshell as package
+from setuptools import setup
 
 setup(
-    name = PyWCGIshell.__name__,
- 
-    version = PyWCGIshell.__version__,
-    py_modules=[PyWCGIshell.__name__],
+    name=package.__name__,
+    version=package.__version__,
+    py_modules=[package.__name__],
     install_requires = [],
-
-    author=name,
-    author_email=email,
-    maintainer=name,
-    maintainer_email=email,
- 
-    description = "This package implement a WebShell for CGI and WSGI server.",
-    long_description = open('README.md').read(),
+    author=package.__author__,
+    author_email=package.__author_email__,
+    maintainer=package.__maintainer__,
+    maintainer_email=package.__maintainer_email__,
+    description=package.__description__,
+    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
- 
-    include_package_data = True,
-
-    url = 'https://github.com/mauricelambert/PyWCGIshell',
+    url=package.__url__,
     project_urls = {
         "Documentation": "https://mauricelambert.github.io/info/python/security/PyWCGIshell.html"
     },
- 
     classifiers = [
         "Programming Language :: Python",
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
         "Topic :: Security",
         "Natural Language :: English",
         "Programming Language :: Python :: 3.9",
@@ -38,6 +30,16 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS",
     ],
- 
     python_requires='>=3.6',
+    keywords=[
+        "WebShell",
+        "Server",
+        "Web",
+        "Hacking",
+        "WSGI",
+        "CGI",
+        "Security",
+    ],
+    platforms=["Windows", "Linux", "MacOS"],
+    license=package.__license__,
 )
