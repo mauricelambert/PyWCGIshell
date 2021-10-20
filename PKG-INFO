@@ -1,9 +1,7 @@
 Metadata-Version: 2.1
 Name: PyWCGIshell
 Version: 1.0.0
-Summary: 
-This package implement a WebShell for CGI and WSGI server.
-
+Summary:  This package implement a WebShell for CGI and WSGI server. 
 Home-page: https://github.com/mauricelambert/PyWCGIshell
 Author: Maurice Lambert
 Author-email: mauricelambert434@gmail.com
