@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: PyWCGIshell
-Version: 1.0.1
+Version: 1.0.2
 Summary:  This package implement a WebShell for CGI and WSGI server. 
 Home-page: https://github.com/mauricelambert/PyWCGIshell
 Author: Maurice Lambert
@@ -9,7 +9,9 @@ Maintainer: Maurice Lambert
 Maintainer-email: mauricelambert434@gmail.com
 License: GPL-3.0 License
 Project-URL: Documentation, https://mauricelambert.github.io/info/python/security/PyWCGIshell.html
-Description: # PyWCGIshell
+Description: ![PyWCGIshell logo](https://mauricelambert.github.io/info/python/security/PyWCGIshell.png "PyWCGIshell logo")
+        
+        # PyWCGIshell
         
         ## Description
         

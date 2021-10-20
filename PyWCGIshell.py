@@ -40,7 +40,7 @@ import html
 import sys
 import re
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"
@@ -64,6 +64,9 @@ BinaryListOrNone = TypeVar("BinaryListOrNone", List[bytes], None)
 
 WEBSHELL_PAGE = f"""
 <!DOCTYPE html>
+<!--
+{copyright}
+-->
 <html>
     <head>
         <title>WebShell</title>
@@ -659,10 +662,6 @@ def main() -> None:
                 ' mode add "wsgi" as argument.'
             )
             print('Use: "python3 -m PyWCGIshell wsgi" to try this WebShell')
-        finally:
-            print("<!--")
-            print(copyright)
-            print("-->")
 
 
 if __name__ == "__main__":

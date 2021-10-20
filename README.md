@@ -1,3 +1,5 @@
+![PyWCGIshell logo](https://mauricelambert.github.io/info/python/security/PyWCGIshell.png "PyWCGIshell logo")
+
 # PyWCGIshell
 
 ## Description
