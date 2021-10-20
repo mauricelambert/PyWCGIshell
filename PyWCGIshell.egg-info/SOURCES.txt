@@ -2,7 +2,6 @@ LICENSE.txt
 MANIFEST.in
 PyWCGIshell.py
 README.md
-setup.cfg
 setup.py
 PyWCGIshell.egg-info/PKG-INFO
 PyWCGIshell.egg-info/SOURCES.txt
