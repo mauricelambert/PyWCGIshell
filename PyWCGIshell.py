@@ -40,7 +40,7 @@ import html
 import sys
 import re
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"

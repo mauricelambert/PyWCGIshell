@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: PyWCGIshell
-Version: 1.0.2
+Version: 1.0.3
 Summary:  This package implement a WebShell for CGI and WSGI server. 
 Home-page: https://github.com/mauricelambert/PyWCGIshell
 Author: Maurice Lambert
@@ -100,6 +100,14 @@ Description: ![PyWCGIshell logo](https://mauricelambert.github.io/info/python/se
          - Configure (server type, passphrase and passphrase location) and copy the WebShell code or install it
          - Paste it in the default page of the victim server or import it
          - Send a request with the passphrase and exploit the weak server
+        
+        ## Example
+        
+        Install and configure PyWCGIshell on WebScripts to keep your illegitimate access and hide it ([repo is here](https://github.com/mauricelambert/WebScriptsWebShell)).
+        
+        [![WebShell on WebScripts - Youtube](https://img.youtube.com/vi/pvaAwOkZ5FU/0.jpg)](http://www.youtube.com/watch?v=pvaAwOkZ5FU)
+        
+        *WebShell on WebScripts - Youtube*
         
         ## Links
         

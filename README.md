@@ -90,6 +90,14 @@ To use this WebShell:
  - Paste it in the default page of the victim server or import it
  - Send a request with the passphrase and exploit the weak server
 
+## Example
+
+Install and configure PyWCGIshell on WebScripts to keep your illegitimate access and hide it ([repo is here](https://github.com/mauricelambert/WebScriptsWebShell)).
+
+[![WebShell on WebScripts - Youtube](https://img.youtube.com/vi/pvaAwOkZ5FU/0.jpg)](http://www.youtube.com/watch?v=pvaAwOkZ5FU)
+
+*WebShell on WebScripts - Youtube*
+
 ## Links
 
  - [Github Page](https://github.com/mauricelambert/PyWCGIshell/)
